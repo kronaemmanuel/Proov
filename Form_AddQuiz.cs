@@ -16,11 +16,13 @@ namespace Proov
         private void Btn_AddQuiz_Click(object sender, EventArgs e)
         {
             var quizName = txtbx_quizName.Text;
+            var quizId = _quizService.Count + 1;
+            const string teacherId = "0001";
 
-            var success = _quizService.AddQuiz("0003", quizName, "0001");
+            var success = _quizService.AddQuiz(quizId.ToString(), quizName, teacherId);
+
             Console.WriteLine(success ? "Quiz Successfully Added to Database" : "Error while adding Quiz to database");
         }
-
     }
 }
 

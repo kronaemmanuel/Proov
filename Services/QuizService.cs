@@ -1,49 +1,52 @@
 ﻿using System;
-using System.Configuration;
 using System.Data.SqlClient;
-using System.Threading;
 
 namespace Proov.Services
 {
-    class QuizService
+    internal class QuizService
     {
-        private int count = 0;
+        private readonly SqlService _sqlService;
+        public int Count { get; private set; }
+
         public QuizService()
         {
-            GetCount();
+            _sqlService = new SqlService();
+            Count = GetCount();
         }
 
-        private bool GetCount()
+        public int GetCount()
         {
-            throw new NotImplementedException();
-        }
-    }
-        public bool AddQuiz(string QuizID, string QuizName, string TeacherID)
-        {
+            var cmd = new SqlCommand("SELECT COUNT(*) FROM Quiz");
+
             try
             {
-                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Proov.Properties.Settings.proovConnectionString"].ConnectionString))
-                {
-                    connection.Open();
-                    
-                    var cmd = new SqlCommand("INSERT INTO Quiz(quiz_id, quiz_name, teacher_id) VALUES(@QUIZ_ID, @QUIZ_NAME, @TEACHER_ID)", connection);
-                    cmd.Parameters.AddWithValue("@QUIZ_ID", QuizID);
-                    cmd.Parameters.AddWithValue("@QUIZ_NAME", QuizName);
-                    cmd.Parameters.AddWithValue("@TEACHER_ID", TeacherID);
-                    
-                    cmd.ExecuteNonQuery();
-                }
+                return Count = (int) _sqlService.RunScalar(cmd);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
 
+        }
+        public bool AddQuiz(string quizId, string quizName, string teacherId)
+        { 
+            var cmd = new SqlCommand("INSERT INTO Quiz(quiz_id, quiz_name, teacher_id) VALUES(@QUIZ_ID, @QUIZ_NAME, @TEACHER_ID)");
+                    
+            cmd.Parameters.AddWithValue("@QUIZ_ID", quizId);
+            cmd.Parameters.AddWithValue("@QUIZ_NAME", quizName);
+            cmd.Parameters.AddWithValue("@TEACHER_ID", teacherId);
+
+            try
+            {
+                _sqlService.RunNonQuery(cmd);
                 return true;
             }
-            catch (SqlException exception)
+            catch (Exception e)
             {
-                Console.WriteLine(exception);
+                Console.WriteLine(e);
                 return false;
             }
         }
-
-        public 
-
     }
 }

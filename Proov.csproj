@@ -61,7 +61,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\QuizService.cs" />
-    <Compile Include="Services\SQLService.cs" />
+    <Compile Include="Services\SqlService.cs" />
     <EmbeddedResource Include="Form_AddQuiz.resx">
       <DependentUpon>Form_AddQuiz.cs</DependentUpon>
     </EmbeddedResource>
