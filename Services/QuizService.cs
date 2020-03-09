@@ -14,7 +14,7 @@ namespace Proov.Services
             Count = GetCount();
         }
 
-        public int GetCount()
+        private int GetCount()
         {
             var cmd = new SqlCommand("SELECT COUNT(*) FROM Quiz");
 
@@ -27,8 +27,8 @@ namespace Proov.Services
                 Console.WriteLine(e);
                 throw;
             }
-
         }
+
         public bool AddQuiz(string quizId, string quizName, string teacherId)
         { 
             var cmd = new SqlCommand("INSERT INTO Quiz(quiz_id, quiz_name, teacher_id) VALUES(@QUIZ_ID, @QUIZ_NAME, @TEACHER_ID)");
